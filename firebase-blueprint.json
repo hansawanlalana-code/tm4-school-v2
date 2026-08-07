@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "Teacher": {
+      "title": "Teacher",
+      "description": "Information about teachers and academic staff",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "User unique ID" },
+        "name": { "type": "string", "description": "Teacher full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "password": { "type": "string", "description": "Hashed or plain password for login" },
+        "position": { "type": "string", "description": "Position, e.g. ครูผู้ช่วย, ครู ค.ศ. 1" },
+        "subjectGroup": { "type": "string", "description": "Subject group, e.g. วิทยาศาสตร์, คณิตศาสตร์" },
+        "profilePic": { "type": "string", "description": "Base64 or image URL" },
+        "role": { "type": "string", "enum": ["teacher", "academic"], "description": "Role-Based Access Control role" },
+        "status": { "type": "string", "enum": ["active", "inactive"], "description": "Account status" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "role", "status"]
+    },
+    "Submission": {
+      "title": "Submission",
+      "description": "Teacher file submission record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Submission unique ID" },
+        "teacherId": { "type": "string", "description": "Reference to the teacher" },
+        "teacherName": { "type": "string", "description": "Denormalized teacher name" },
+        "teacherProfilePic": { "type": "string", "description": "Denormalized teacher profile pic" },
+        "teacherSubjectGroup": { "type": "string", "description": "Denormalized teacher subject group" },
+        "title": { "type": "string", "description": "Title of the work" },
+        "description": { "type": "string", "description": "Description of the work" },
+        "type": { "type": "string", "description": "Work category, e.g. แผนการเรียนรู้, รายงานผล" },
+        "fileName": { "type": "string", "description": "Uploaded file name" },
+        "fileType": { "type": "string", "description": "File extension, e.g. pdf, docx" },
+        "fileSize": { "type": "integer", "description": "File size in bytes" },
+        "fileUrl": { "type": "string", "description": "Base64 file data or access URL" },
+        "deadline": { "type": "string", "description": "Assignment submission due date (YYYY-MM-DD)" },
+        "status": { "type": "string", "enum": ["pending_submission", "submitted", "checking", "needs_edit", "approved"] },
+        "comments": { "type": "string", "description": "Academic feedback/notes" },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "teacherId", "title", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User system notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string", "description": "Receiver UID or 'academic'" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "message", "read", "createdAt"]
+    },
+    "SystemSettings": {
+      "title": "SystemSettings",
+      "description": "Application custom branding and rules",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Always 'config'" },
+        "schoolLogo": { "type": "string" },
+        "schoolName": { "type": "string" },
+        "websiteTitle": { "type": "string" },
+        "loginMessage": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "backgroundImage": { "type": "string" },
+        "allowedFileTypes": { "type": "array" },
+        "maxFileSize": { "type": "integer", "description": "Max file size in MB" },
+        "enableNotifications": { "type": "boolean" }
+      },
+      "required": ["id", "schoolName", "websiteTitle"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Log of system operations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userRole": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "userName", "action", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/teachers/{teacherId}": {
+      "schema": "Teacher",
+      "description": "Teachers collection"
+    },
+    "/submissions/{submissionId}": {
+      "schema": "Submission",
+      "description": "File submissions collection"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "Notifications collection"
+    },
+    "/systemSettings/{settingId}": {
+      "schema": "SystemSettings",
+      "description": "System config document"
+    },
+    "/activityLogs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "System activity logs"
+    }
+  }
+}

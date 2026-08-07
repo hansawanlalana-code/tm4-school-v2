@@ -1,0 +1,6 @@
+{
+  "name": "ระบบส่งไฟล์งาน",
+  "description": "ระบบส่งไฟล์งานสำหรับคุณครูและฝ่ายวิชาการ โรงเรียนเทศบาล 4 (บ้านเชียงราย)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

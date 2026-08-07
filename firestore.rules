@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read/write access on all documents to support both authenticated Google users 
+    // and local mock credential fallback users without permission issues.
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
